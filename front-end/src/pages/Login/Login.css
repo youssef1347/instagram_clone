@@ -1,0 +1,244 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+/* images styles */
+.images-side-container {
+    background-color: #0e0e0e;
+    flex: 1;
+
+    .images-side {
+        p {
+            font-family: "Montserrat", sans-serif;
+            color: #fff;
+            font-size: 35px;
+            margin-bottom: 1rem;
+            font-weight: 400;
+            text-align: center;
+            margin-top: 30px;
+
+            span {
+                background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+                color: transparent;
+                background-clip: text;
+            }
+        }
+
+        /* instagram logo style */
+        .instagram-logo-container {
+            margin-top: 50px;
+            margin-left: 50px;
+
+            img {
+                width: 80px;
+            }
+        }
+
+        /* phone image style */
+        .phone-image-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            img {
+                width: 300px;
+            }
+        }
+    }
+}
+
+/* page container */
+.login-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* divider styles */
+.divider {
+    width: 3px;
+    background-color: #6d6d6d;
+    height: 100%;
+}
+
+/* form styles */
+.form-side-container {
+    flex: 1;
+    background-color: #000000e8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .instagram-logo-mobile {
+        display: none;
+    }
+
+
+    .form-side {
+        margin-top: 50px;
+        color: #fff;
+
+        span {
+            font-size: 30px;
+            font-family: "Montserrat", sans-serif;
+            text-align: center;
+        }
+
+        .meta-logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 100px;
+            font-weight: 400;
+            gap: 10px;
+
+            /* meta logo */
+            .meta-logo {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                font-size: 20px;
+            }
+
+            /* create account button */
+            button {
+                background-color: transparent;
+                border: 1px solid #0095f6;
+                color: #0095f6;
+                padding: 10px 20px;
+                border-radius: 22px;
+                cursor: pointer;
+                width: 100%;
+                height: 47px;
+                font-size: 17px;
+                transition: all 0.3s ease;
+
+                &:hover {
+                    background-color: #0095f6;
+                    color: #fff;
+                }
+            }
+        }
+
+        h3 {
+            margin: 20px;
+            margin-left: 50px;
+            text-align: left !important;
+            font-family: "Montserrat", sans-serif;
+        }
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+
+        /* input styles */
+        input {
+            padding: 10px;
+            margin: 10px;
+            background-color: transparent;
+            outline: none;
+            border-radius: 8px;
+            width: 470px;
+            height: 50px;
+            border: 1px solid #6d6d6d;
+            color: #fff;
+        }
+
+        /* error message styles */
+        .error-message {
+            color: #e91e1e;
+            margin: 10px;
+            text-align: center;
+                span {
+                    font-size: 17px;
+                    cursor: pointer;
+                    text-decoration: underline;
+                }
+        }
+
+        /* forgot password link styles */
+        span.forgot-password {
+            font-size: 17px;
+            cursor: pointer;
+            margin: 10px;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+        }
+
+        button {
+            padding: 10px;
+            margin: 10px;
+            background-color: #0095f6;
+            border: none;
+            border-radius: 22px;
+            width: 470px;
+            height: 40px;
+            color: #fff;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        button.disabled {
+            background-color: #0094f657;
+            cursor: not-allowed;
+        }
+    }
+}
+
+
+/* mobile styles */
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column;
+    }
+
+    .images-side-container {
+        display: none;
+    }
+
+    .form-side-container {
+        flex: none;
+        width: 100%;
+        height: 100vh;
+
+        .instagram-logo-mobile {
+            display: block;
+            margin: 0 auto;
+            width: 60px;
+        }
+
+        .form-side {
+            margin-top: 50px;
+
+            h3 {
+                display: flex;
+                justify-content: center;
+                margin: 30px auto;
+                margin-bottom: 15px;
+            }
+
+            span {
+                font-size: 25px;
+            }
+
+            .meta-logo-container {
+                margin-top: 50px;
+
+                .meta-logo {
+                    font-size: 18px;
+                }
+            }
+        }
+
+        form {
+            input {
+                width: 290px;
+                border-radius: 17px;
+            }
+
+            button {
+                width: 90%;
+            }
+        }
+    }
+}
