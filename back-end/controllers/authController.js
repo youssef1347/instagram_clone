@@ -20,7 +20,7 @@ exports.register = async (req, res) => {
 
         const { username, email, password } = value;
 
-        const existUser = await User.find({ email });
+        const existUser = await User.findOne({ email });
 
         if (existUser) {
             return res.status(409).json({ message: "User already exists" });
@@ -48,7 +48,7 @@ exports.sendOtp = async (req, res) => {
         const { email } = req.body;
 
         // check if the user exists
-        const user = await User.find({ email });
+        const user = await User.findOne({ email });
 
         if (!user) {
             return res.status(400).json({ message: "no email detected" });
@@ -83,7 +83,7 @@ exports.verifyOtp = async (req, res) => {
         const { email, otp } = req.body;
 
         // Find the user by email
-        const user = await User.find({ email });
+        const user = await User.findOne({ email });
 
         if (!user) {
             return res.status(400).json({ message: "Invalid email" });
@@ -201,7 +201,7 @@ exports.forgotPassword = async (req, res) => {
         const { email } = req.body;
 
         // Find the user by email
-        const user = await User.find({ email });
+        const user = await User.findOne({ email });
 
         if (!user) {
             return res.status(400).json({ message: "Invalid email" });
@@ -218,13 +218,14 @@ exports.forgotPassword = async (req, res) => {
 
         // generate reset password link
         // code to get the frontend url from environment variable will be added later
-        const resetPasswordLink = `${process.env.CLIENT_URL}/reset-password?token=${resetPasswordToken}`;
+        const resetPasswordLink = `${process.env.CLIENT_URL}reset-password/${resetPasswordToken}`;
 
         // send reset password link to the user's email
         await sendEmail(
             email,
             "Reset Your Password",
             `You can reset your password by clicking the following link: ${resetPasswordLink}. This link will expire in 10 minutes.`,
+            `<p>click this link to reset your password: <a href="${resetPasswordLink}">click here</a></p>`
         );
 
         res.status(200).json({ message: "OTP sent to your email" });
@@ -279,13 +280,15 @@ exports.refreshToken = async (req, res) => {
         const user = await User.findById(decoded.id);
 
         if (!user) {
-            return res.status(400).json({ message: "Invalid refresh token" });
+            return res.status(401).json({ message: "no refresh token provided" });
         }
 
         // Generate a new access token
-        const { accessToken } = generateToken(user);
+        const accessToken = jwt.sign({ id: user._id },
+            process.env.ACCESS_TOKEN_SECRET,
+            { expiresIn: '5m' });
 
-        res.status(200).json({ accessToken });
+        res.json({ accessToken });
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Server error" });

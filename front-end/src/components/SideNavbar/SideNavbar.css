@@ -1,0 +1,273 @@
+/* navbar container styles */
+.navbar-container {
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--main-bg-color);
+  padding-left: 20px;
+  width: 70px;
+  overflow: hidden;
+  transition: width 0.3s ease;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  border-right: 1px solid var(--border-color);
+}
+.navbar-container-active:hover {
+  width: 200px;
+}
+.navbar-container-static {
+  width: 200px;
+}
+
+/* navbar links container styles */
+.navbar-container div {
+  display: flex;
+  gap: 15px;
+  margin: 9px 0;
+  width: min-content;
+  padding: 8px;
+  box-sizing: border-box;
+  color: var(--main-text-color);
+  align-items: center;
+}
+
+/* navbar links styles */
+.navbar-container a {
+  text-decoration: none;
+  width: 30px;
+  color: var(--main-text-color);
+}
+
+/* icons styles */
+.navbar-home-icon,
+.navbar-notifications-icon,
+.navbar-profile-pic,
+.navbar-instagram-logo,
+.navbar-search-icon,
+.navbar-explore-icon,
+.navbar-messages-icon,
+.navbar-reels-icon,
+.navbar-create-post-icon,
+.navbar-menu-icon {
+  font-size: 30px;
+  width: 40px;
+  cursor: pointer;
+}
+
+/* h5 styles*/
+.navbar-container h5 {
+  white-space: nowrap;
+  font-size: 17px;
+  transition: transform 0.3s ease;
+}
+.navbar-container-active h5 {
+  transform: translateX(-200px);
+}
+
+.navbar-container-active:hover h5 {
+  transform: translateX(0);
+}
+.navbar-container-active div:hover {
+  background-color: var(--hover-bg-color);
+  border-radius: 10px;
+}
+
+/* image styles */
+.navbar-profile-pic {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.notifications-link-container {
+  cursor: pointer;
+}
+
+/* main container */
+.navbar-main-container {
+  display: flex;
+}
+
+/* menu modal styles */
+.menu-modal-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  gap: 10px;
+  background-color: var(--modal-bg-color);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  bottom: 60px;
+  left: 15px;
+  z-index: 1000000;
+
+  h6 {
+    color: var(--main-text-color);
+    margin: 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+
+  h6:hover {
+    opacity: 0.8;
+  }
+
+  .theme-icon {
+    font-size: 18px;
+  }
+
+  .modal-divider {
+    height: 3px;
+    width: 200px;
+    background-color: var(--border-color);
+    margin: 10px 0;
+    padding: 0;
+  }
+
+  .navbar-moon-icon {
+    font-size: 30px;
+  }
+}
+/* RESPONSIVE DESIGN */
+
+/* Tablet screens (768px to 1024px) */
+@media (max-width: 1024px) {
+  .navbar-container {
+    width: 60px;
+    padding-left: 15px;
+  }
+
+  .navbar-container-active:hover {
+    width: 180px;
+  }
+
+  .navbar-container-static {
+    width: 180px;
+  }
+
+  .navbar-container h5 {
+    font-size: 15px;
+  }
+
+  .navbar-home-icon,
+  .navbar-notifications-icon,
+  .navbar-profile-pic,
+  .navbar-instagram-logo,
+  .navbar-search-icon,
+  .navbar-explore-icon,
+  .navbar-messages-icon,
+  .navbar-reels-icon,
+  .navbar-create-post-icon,
+  .navbar-menu-icon {
+    font-size: 24px;
+    width: 36px;
+  }
+}
+
+/* Mobile screens (below 768px) */
+@media (max-width: 768px) {
+  .navbar-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    padding: 12px 8px;
+    padding-left: 8px;
+    border-right: none;
+    border-top: 1px solid var(--border-color);
+    overflow-x: auto;
+    overflow-y: hidden;
+    justify-content: flex-start;
+  }
+
+  .navbar-container-active:hover {
+    width: 100%;
+  }
+
+  .navbar-container-static {
+    width: 100%;
+  }
+
+  /* Hide h5 labels on mobile */
+  .navbar-container h5 {
+    display: none;
+  }
+
+  /* Adjust spacing for mobile nav items */
+  .navbar-container > div,
+  .navbar-container a {
+    margin: 0 8px;
+    padding: 8px;
+  }
+
+  .navbar-home-icon,
+  .navbar-notifications-icon,
+  .navbar-profile-pic,
+  .navbar-instagram-logo,
+  .navbar-search-icon,
+  .navbar-explore-icon,
+  .navbar-messages-icon,
+  .navbar-reels-icon,
+  .navbar-create-post-icon,
+  .navbar-menu-icon {
+    font-size: 24px;
+    width: 32px;
+    min-width: 32px;
+  }
+
+  .navbar-profile-pic {
+    height: 28px;
+    width: 28px;
+  }
+
+  .navbar-instagram-logo-container {
+    display: none;
+  }
+
+  .menu-modal-container {
+    bottom: auto;
+    top: -200px;
+    left: 8px;
+  }
+}
+
+/* Small mobile screens (below 480px) */
+@media (max-width: 480px) {
+  .navbar-container {
+    padding: 8px 4px;
+  }
+
+  .navbar-container > div,
+  .navbar-container a {
+    margin: 0 4px;
+    padding: 4px;
+    gap: 0;
+  }
+
+  .navbar-home-icon,
+  .navbar-notifications-icon,
+  .navbar-profile-pic,
+  .navbar-instagram-logo,
+  .navbar-search-icon,
+  .navbar-explore-icon,
+  .navbar-messages-icon,
+  .navbar-reels-icon,
+  .navbar-create-post-icon,
+  .navbar-menu-icon {
+    font-size: 20px;
+    width: 28px;
+    min-width: 28px;
+  }
+}

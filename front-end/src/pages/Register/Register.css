@@ -1,0 +1,124 @@
+/* page container styles */
+.register-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #000000e8;
+    align-items: center;
+    height: 100vh;
+}
+
+/* header styles */
+.register-header {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin: 20px;
+    color: #fff;
+}
+
+/* form styles */
+.register-form {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin: 20px;
+
+    /* sign up button */
+    .sign-up {
+        padding: 10px;
+        border-radius: 15px;
+        width: 470px;
+        height: 45px;
+        background-color: #0095f6;
+        border: none;
+        outline: none;
+        color: #fff;
+        margin-top: 15px;
+        cursor: pointer;
+
+        &:disabled {
+            background-color: #6d6d6d;
+            cursor: not-allowed;
+        }
+    }
+
+    /* have account button */
+    .have-account {
+        /* padding: 10px; */
+        border-radius: 15px;
+        width: 470px;
+        height: 45px;
+        background-color: transparent;
+        border: 1px solid #6d6d6d;
+        outline: none;
+        color: #fff;
+        margin-top: 15px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #6d6d6d;
+        }
+    }
+}
+
+
+/* mobile styles */
+@media (max-width: 768px) {
+    .register-container {
+        background-color: #000000e8;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .register-header {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        margin: 20px;
+        color: #fff;
+    }
+
+    .register-form {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        margin: 20px;
+
+        /* sign up button */
+        .sign-up {
+            padding: 10px;
+            border-radius: 15px;
+            width: 100%;
+            height: 45px;
+            background-color: #0095f6;
+            border: none;
+            outline: none;
+            color: #fff;
+            margin-top: 15px;
+            cursor: pointer;
+
+            &:disabled {
+                background-color: #6d6d6d;
+                cursor: not-allowed;
+            }
+        }
+
+        /* have account button */
+        .have-account {
+            /* padding: 10px; */
+            border-radius: 15px;
+            width: 100%;
+            height: 45px;
+            background-color: transparent;
+            border: 1px solid #6d6d6d;
+            outline: none;
+            color: #fff;
+            margin-top: 15px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #6d6d6d;
+            }
+        }
+    }
+}

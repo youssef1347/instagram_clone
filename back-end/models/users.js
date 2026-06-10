@@ -10,7 +10,12 @@ const userSchema = mongoose.Schema({
     isVerified: { type: Boolean, default: false },
     resetPasswordToken: { type: String },
     resetPasswordExpires: { type: Date },
-});
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    profilePic: { type: String, default: 'http://localhost:5000/uploads/default-profile-pic.jpg' },
+    bio: { type: String, default: '' },
+    privateAccount: { type: Boolean, default: false },
+}, { timestamps: true } );
 
 const User = mongoose.model('User', userSchema);
 

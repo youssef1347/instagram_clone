@@ -232,8 +232,9 @@
 
         form {
             input {
-                width: 290px;
+                width: 100%;
                 border-radius: 17px;
+                
             }
 
             button {

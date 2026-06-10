@@ -4,6 +4,7 @@ import { FaMeta } from "react-icons/fa6";
 import api from '../../utils/api';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { Input } from '../../components/Input/Input';
 
 
 export const Login = () => {
@@ -43,16 +44,18 @@ export const Login = () => {
             // handle if the user isn't verifief
             if (error.response && error.response.status === 403) {
                 setErrorMessage('Your account is not verified.');
+                return;
             }
-
-            toast.error(error.response.data.message);
+            
+            toast.error(error.response?.data?.message);
         }
     }
 
     function onChange(e) {
         // handle if the input fields are empty or not, and enable/disable the login button accordingly
-        const value = e.target.value;
-        if (!value.trim()) {
+        const email = emailRef.current.value;
+        const password = passwordRef.current.value;
+        if (!email.trim() || !password.trim()) {
             // disable login button if input is empty
             setDisabled(true);
         } else {
@@ -88,10 +91,20 @@ export const Login = () => {
 
                     <div className="form-container">
                         <form onSubmit={handleLogin}>
-                            <input type="email" placeholder="Email address" ref={emailRef} onChange={onChange} /> {/* email input */}
-                            <input type="password" placeholder="Password" ref={passwordRef} onChange={onChange} /> {/* password input */}
+                            <Input 
+                                type="email" 
+                                placeholder="Email address" 
+                                ref={emailRef} 
+                                onChange={onChange} 
+                            />
+                            <Input 
+                                type="password" 
+                                placeholder="Password" 
+                                ref={passwordRef} 
+                                onChange={onChange} 
+                            />
 
-                            {errorMessage && <p className="error-message">{errorMessage} to verify your account <span onClick={() => navigate('/verify-email')}>click here</span> </p>} {/* error message */}
+                            {errorMessage && <p className="error-message">{errorMessage} to verify your account <span onClick={() => navigate('/verify-otp')}>click here</span> </p>} {/* error message */}
 
                             <button className={disabled ? 'disabled' : ''} type="submit" disabled={disabled}>Log In</button> {/* login button */}
                             <span onClick={() => navigate('/forgot-password')} className="forgot-password">Forgot password?</span> {/* forgot password link */}
