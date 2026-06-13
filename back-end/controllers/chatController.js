@@ -3,7 +3,7 @@ const Message = require("../models/messages");
 const User = require("../models/users");
 const { emitMessageToUser } = require("../utils/socket");
 
-const getCurrentUserId = (req) => req.user.id || req.user._id;
+// const getCurrentUserId = (req) => req.user.id || req.user._id;
 
 // Keep conversation responses consistent wherever they are returned.
 const populateConversation = async (conversation) => {
@@ -16,7 +16,7 @@ const populateConversation = async (conversation) => {
 // Return every conversation the logged-in user belongs to, newest activity first.
 exports.getConversations = async (req, res) => {
   try {
-    const currentUserId = getCurrentUserId(req);
+    const currentUserId = req.user.id;
 
     const conversations = await Conversation.find({
       participants: currentUserId,
@@ -34,7 +34,7 @@ exports.getConversations = async (req, res) => {
 
 exports.getOrCreateConversation = async (req, res) => {
   try {
-    const currentUserId = getCurrentUserId(req);
+    const currentUserId = req.user.id;
     const { userId } = req.params;
 
     // Direct messages are only between two different users.
@@ -70,7 +70,7 @@ exports.getOrCreateConversation = async (req, res) => {
 
 exports.getMessages = async (req, res) => {
   try {
-    const currentUserId = getCurrentUserId(req);
+    const currentUserId = req.user.id;
     const { conversationId } = req.params;
 
     // Make sure the requester is a participant before exposing messages.
@@ -96,7 +96,7 @@ exports.getMessages = async (req, res) => {
 
 exports.sendMessage = async (req, res) => {
   try {
-    const currentUserId = getCurrentUserId(req);
+    const currentUserId = req.user.id;
     const { conversationId } = req.params;
     const { text } = req.body;
 
@@ -152,7 +152,7 @@ exports.sendMessage = async (req, res) => {
 
 exports.markConversationRead = async (req, res) => {
   try {
-    const currentUserId = getCurrentUserId(req);
+    const currentUserId = req.user.id;
     const { conversationId } = req.params;
 
     // Only participants can mark a conversation as read.

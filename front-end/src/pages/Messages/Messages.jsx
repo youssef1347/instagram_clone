@@ -51,6 +51,7 @@ export const Messages = () => {
       try {
         setIsLoadingConversations(true);
         const response = await api.get("/api/chats");
+        console.log(response);
         setConversations(response.data.conversations || []);
       } catch (error) {
         toast.error("Failed to load chats");

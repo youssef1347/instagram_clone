@@ -45,7 +45,7 @@ exports.searchUsers = async (req, res) => {
     const searchRegex = new RegExp(query.trim(), "i");
     const users = await User.find({
       _id: { $ne: req.user.id },
-      $or: [{ username: searchRegex }, { email: searchRegex }],
+      username: { $regex: searchRegex },
     }).select("username profilePic bio");
 
     res.json({ users });

@@ -11,7 +11,7 @@ import {
   FiX,
 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../../store/slices/userSlice";
 
 export const Navbar = () => {
@@ -19,6 +19,8 @@ export const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
+  console.log(user);
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
@@ -47,8 +49,8 @@ export const Navbar = () => {
         {/* Search Bar */}
         <form
           className="navbar-search"
-          onSubmit={(event) => {
-            event.preventDefault();
+          onSubmit={(e) => {
+            e.preventDefault();
             const trimmed = searchQuery.trim();
             if (trimmed) {
               navigate(`/search?query=${encodeURIComponent(trimmed)}`);
@@ -60,7 +62,7 @@ export const Navbar = () => {
             type="text"
             placeholder="Search"
             value={searchQuery}
-            onChange={(event) => setSearchQuery(event.target.value)}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </form>
 
@@ -76,6 +78,15 @@ export const Navbar = () => {
                 title={item.label}
               >
                 <Icon size={24} />
+
+                {/* Profile icon */}
+                {item.label === "Profile" && (
+                  <div className="profile-label">
+                    <span>Profile</span>
+                    <img src={user.profilePic} alt="Profile" />
+                  </div>
+                  
+                )}
               </a>
             );
           })}

@@ -45,6 +45,8 @@ export const Login = () => {
             // handle if the user isn't verifief
             if (error.response && error.response.status === 403) {
                 setErrorMessage('Your account is not verified.');
+                localStorage.setItem('email', email); // store email for OTP verification
+                await api.post('/api/auth/send-otp', { email });
                 return;
             }
             

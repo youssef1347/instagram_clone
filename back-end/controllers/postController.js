@@ -5,7 +5,7 @@ const { emitNotification } = require("../utils/socket");
 
 // create post
 const createPost = async (req, res) => {
-    try {
+  try {
         if (!req.file) {
         return res.status(400).json({ message: "No image file uploaded" });
         }
@@ -190,7 +190,7 @@ const addComment = async (req, res) => {
 const deleteComment = async (req, res) => {
     try {
         const { postId, commentId } = req.params;
-        const userId = req.user._id;
+        const userId = req.user.id;
 
         const post = await Post.findById(postId);
 
@@ -208,7 +208,7 @@ const deleteComment = async (req, res) => {
         if (!comment.user.equals(userId)) {
         return res
             .status(403)
-            .json({ message: "Not authorized to delete this comment" });
+            .json({ message: "Not allowed to delete this comment" });
         }
 
         post.comments.id(commentId).deleteOne();
@@ -225,7 +225,7 @@ const deleteComment = async (req, res) => {
 const deletePost = async (req, res) => {
     try {
         const { postId } = req.params;
-        const userId = req.user._id;
+        const userId = req.user.id;
 
         const post = await Post.findById(postId);
 
@@ -237,7 +237,7 @@ const deletePost = async (req, res) => {
         if (!post.user.equals(userId)) {
         return res
             .status(403)
-            .json({ message: "Not authorized to delete this post" });
+            .json({ message: "Not allowed to delete this post" });
         }
 
         await Post.findByIdAndDelete(postId);

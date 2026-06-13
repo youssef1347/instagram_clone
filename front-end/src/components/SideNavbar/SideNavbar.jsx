@@ -130,7 +130,7 @@ export const SideNavbar = ({ onOpenCreatePost }) => {
                 <NavLink to={`/${user?._id}`}>
                     <div className="profile-link-container">
                         <img
-                        src={`http://localhost:5000/${user?.profilePic}`}
+                        src={user?.profilePic || `http://localhost:5000/${user?.profilePic}`}
                         width="20"
                         height="20"
                         alt="profile"
