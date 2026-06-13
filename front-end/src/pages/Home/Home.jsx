@@ -14,7 +14,7 @@ export const Home = () => {
     const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
 
     useEffect(() => {
-        fetchFeed();
+      fetchFeed();
     }, []);
 
     const fetchFeed = async () => {
@@ -68,7 +68,7 @@ export const Home = () => {
                 {[1, 2, 3, 4, 5].map((i) => (
                     <div key={i} className="story">
                     <img
-                        src={`https://via.placeholder.com/56?text=User${i}`}
+                        src={`http://localhost:5000/uploads/default-profile-pic.jpg`}
                         alt={`User${i}`}
                         className="story-avatar"
                     />
@@ -126,7 +126,7 @@ export const Home = () => {
                 <div key={i} className="suggestion-item">
                   <div className="suggestion-user">
                     <img
-                      src={`https://via.placeholder.com/32?text=User${i}`}
+                      src={`http://localhost:5000/uploads/default-profile-pic.jpg`}
                       alt={`User${i}`}
                     />
                     <div>

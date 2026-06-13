@@ -45,6 +45,7 @@ api.interceptors.response.use(
                 const { accessToken } = response.data;
                 // store new access token in local storage
                 localStorage.setItem('accessToken', accessToken);
+                window.dispatchEvent(new Event("auth-token-changed"));
                 // retry original request with new access token
                 error.config.headers.Authorization = `Bearer ${accessToken}`;
                 return api.request(error.config);

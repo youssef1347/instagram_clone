@@ -1,43 +1,88 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
 import api from "../../utils/api";
 import { SideNavbar } from "../../components/SideNavbar/SideNavbar";
+import { setUser } from "../../store/slices/userSlice";
 import "./Profile.css";
 
 export const Profile = () => {
     const { userId } = useParams();
+    const dispatch = useDispatch();
     const { user } = useSelector((state) => state.user);
     const [posts, setPosts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [profileUser, setProfileUser] = useState(null);
+    const [isProfileLoading, setIsProfileLoading] = useState(true);
+    const [isFollowLoading, setIsFollowLoading] = useState(false);
+
+    const isOwnProfile = user?._id === userId;
+    const isFollowing = useMemo(
+        () =>
+        Boolean(
+            profileUser?.followers?.some((followerId) => followerId === user?._id),
+        ),
+        [profileUser?.followers, user?._id],
+    );
 
     useEffect(() => {
-        if (user && user._id === userId) {
-        setProfileUser(user);
-        } else {
-        setProfileUser(null);
-        }
-    }, [user, userId]);
-
-    useEffect(() => {
-        const fetchUserPosts = async () => {
-        setIsLoading(true);
+        const fetchProfileUser = async () => {
+        setIsProfileLoading(true);
         try {
-            const response = await api.get(`/api/posts/user/${userId}`);
-            setPosts(response.data.posts || []);
+            const response = await api.get(`/api/user/${userId}`);
+            setProfileUser(response.data.user);
         } catch (error) {
             console.error(error);
-            setPosts([]);
+            toast.error("Failed to load profile");
+            setProfileUser(null);
         } finally {
-            setIsLoading(false);
+            setIsProfileLoading(false);
         }
         };
 
         if (userId) {
-        fetchUserPosts();
+        fetchProfileUser();
         }
     }, [userId]);
+
+    useEffect(() => {
+        const fetchUserPosts = async () => {
+            setIsLoading(true);
+            try {
+                const response = await api.get(`/api/posts/user/${userId}`);
+                setPosts(response.data.posts || []);
+            } catch (error) {
+                console.error(error);
+                setPosts([]);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        if (userId) {
+            fetchUserPosts();
+        }
+    }, [userId]);
+
+    const handleFollowToggle = async () => {
+        if (!profileUser || isOwnProfile || isFollowLoading) return;
+
+        setIsFollowLoading(true);
+        try {
+            const endpoint = isFollowing ? "unfollow" : "follow";
+            const response = await api.post(`/api/user/${profileUser._id}/${endpoint}`);
+
+            setProfileUser(response.data.user);
+            dispatch(setUser(response.data.currentUser));
+            toast.success(response.data.message);
+        } catch (error) {
+            console.error(error);
+            toast.error(error.response?.data?.message || "Failed to update follow");
+        } finally {
+            setIsFollowLoading(false);
+        }
+    };
 
     return (
         <div className="profile-page">
@@ -48,7 +93,7 @@ export const Profile = () => {
                     <img
                     src={
                         profileUser?.profilePic ||
-                        user?.profilePic
+                        "http://localhost:5000/uploads/default-profile-pic.jpg"
                     }
                     alt={profileUser?.username || "Profile"}
                     className="profile-avatar"
@@ -58,13 +103,27 @@ export const Profile = () => {
                 <div className="profile-user-info">
                     <div className="profile-title-row">
                     <div>
-                        <h1>{profileUser?.username || "Unknown User"}</h1>
+                        <h1>
+                        {isProfileLoading
+                            ? "Loading..."
+                            : profileUser?.username || "Unknown User"}
+                        </h1>
                         <p className="profile-handle">
                         @{profileUser?.username || userId}
                         </p>
                     </div>
-                    <button className="profile-action-btn">
-                        {profileUser?._id === user?._id ? "Edit Profile" : "Follow"}
+                    <button
+                        className={`profile-action-btn ${isFollowing ? "following" : ""}`}
+                        onClick={handleFollowToggle}
+                        disabled={isOwnProfile || isProfileLoading || isFollowLoading}
+                    >
+                        {isOwnProfile
+                            ? "Edit Profile"
+                            : isFollowLoading
+                                ? "Updating..."
+                                : isFollowing
+                                ? "Following"
+                                : "Follow"}
                     </button>
                     </div>
 

@@ -1,5 +1,7 @@
 const Post = require("../models/posts");
 const User = require("../models/users");
+const Notification = require("../models/notifications");
+const { emitNotification } = require("../utils/socket");
 
 // create post
 const createPost = async (req, res) => {
@@ -86,7 +88,7 @@ const getPostById = async (req, res) => {
 const likePost = async (req, res) => {
   try {
     const { postId } = req.params;
-    const userId = req.user._id;
+    const userId = req.user.id || req.user._id;
 
     const post = await Post.findById(postId);
 
@@ -103,6 +105,22 @@ const likePost = async (req, res) => {
     } else {
       // Like post
       post.likes.push(userId);
+
+      if (!post.user.equals(userId)) {
+        const actor = await User.findById(userId).select("username");
+
+        const notification = await Notification.create({
+          recipient: post.user,
+          actor: userId,
+          post: post._id,
+          type: "like",
+          message: `${actor?.username || "Someone"} liked your post`,
+        });
+
+        await notification.populate("actor", "username profilePic");
+        await notification.populate("post", "imageUrl caption");
+        emitNotification(post.user, notification);
+      }
     }
 
     await post.save();
@@ -124,7 +142,7 @@ const addComment = async (req, res) => {
   try {
     const { postId } = req.params;
     const { text } = req.body;
-    const userId = req.user._id;
+    const userId = req.user.id || req.user._id;
 
     if (!text || text.trim() === "") {
       return res.status(400).json({ message: "Comment text is required" });
@@ -141,7 +159,24 @@ const addComment = async (req, res) => {
       text,
     });
 
+    if (!post.user.equals(userId)) {
+      const actor = await User.findById(userId).select("username");
+
+      const notification = await Notification.create({
+        recipient: post.user,
+        actor: userId,
+        post: post._id,
+        type: "comment",
+        message: `${actor?.username || "Someone"} commented on your post`,
+      });
+
+      await notification.populate("actor", "username profilePic");
+      await notification.populate("post", "imageUrl caption");
+      emitNotification(post.user, notification);
+    }
+
     await post.save();
+    await post.populate("user", "username profilePic");
     await post.populate("comments.user", "username profilePic");
 
     res.json({ message: "Comment added successfully", post });

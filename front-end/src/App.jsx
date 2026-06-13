@@ -13,6 +13,10 @@ import { setUser } from "./store/slices/userSlice";
 import { Home } from "./pages/Home/Home";
 import { Settings } from "./pages/Settings/Settings";
 import { Profile } from "./pages/Profile/Profile";
+import { Search } from "./pages/Search/Search";
+import { NotFound } from "./pages/NotFound/NotFound";
+import { NotificationSocket } from "./components/Notifications/NotificationSocket";
+import { Messages } from "./pages/Messages/Messages";
 
 function App() {
   // check if user is logged in by checking for access token in local storage
@@ -22,7 +26,7 @@ function App() {
   async function fetchUserData() {
     try {
       if (accessToken) {
-        const response = await api.get('/api/user/me');
+        const response = await api.get("/api/user/me");
         console.log(response);
         dispatch(setUser(response.data.user));
       }
@@ -35,10 +39,10 @@ function App() {
     fetchUserData();
   }, []);
 
-
   return (
     <>
       <Toaster />
+      <NotificationSocket />
 
       <Routes>
         <Route path="/login" element={<Login />} />
@@ -47,8 +51,11 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:resetToken" element={<ResetPassword />} />
         <Route path="/" element={<Home />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/messages" element={<Messages />} />
         <Route path="/settings/*" element={<Settings />} />
         <Route path="/:userId" element={<Profile />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );

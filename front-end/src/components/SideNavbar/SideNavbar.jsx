@@ -1,9 +1,7 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./SideNavbar.css";
 import { FaInstagram } from "react-icons/fa";
-import Form from "react-bootstrap/Form";
 import { LuSend } from "react-icons/lu";
-import { MdOutlinePhotoLibrary } from "react-icons/md";
 import { IoSearchOutline } from "react-icons/io5";
 import { CiHeart } from "react-icons/ci";
 import { FiPlus } from "react-icons/fi";
@@ -11,9 +9,16 @@ import { GoVideo, GoHomeFill } from "react-icons/go";
 import { SlCompass } from "react-icons/sl";
 import { IoMdMenu } from "react-icons/io";
 import { BsGearWide, BsMoon, BsSun } from "react-icons/bs";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../context/ThemeContext";
+import { NotificationDrawer } from "../Notifications/NotificationDrawer";
+import api from "../../utils/api";
+import {
+    clearNotificationsInState,
+    setNotifications,
+} from "../../store/slices/notificationSlice";
+import { clearUser } from "../../store/slices/userSlice";
 
 export const SideNavbar = ({ onOpenCreatePost }) => {
     const [openMenu, setOpenMenu] = useState(false);
@@ -21,8 +26,29 @@ export const SideNavbar = ({ onOpenCreatePost }) => {
     const { isDark, toggleTheme } = useContext(ThemeContext);
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const { user } = useSelector((state) => state.user);
-    console.log(user);
+    const { unreadCount } = useSelector((state) => state.notifications);
+
+    useEffect(() => {
+        const fetchNotificationCount = async () => {
+            try {
+                const response = await api.get("/api/notifications");
+                dispatch(
+                    setNotifications({
+                        notifications: response.data.notifications,
+                        unreadCount: response.data.unreadCount,
+                    }),
+                );
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        if (localStorage.getItem("accessToken")) {
+            fetchNotificationCount();
+        }
+    }, [dispatch]);
 
     return (
         <div className="navbar-main-container">
@@ -77,10 +103,18 @@ export const SideNavbar = ({ onOpenCreatePost }) => {
                 {/* notifications link */}
                 <div
                     className="notifications-link-container"
-                    onClick={() => setOpenNotification((prev) => !prev)}
+                    onClick={() => {
+                        setOpenMenu(false);
+                        setOpenNotification((prev) => !prev);
+                    }}
                     >
                     <CiHeart className="navbar-notifications-icon" />
                     <h5>Notifications</h5>
+                    {unreadCount > 0 && (
+                        <span className="notification-badge">
+                            {unreadCount > 99 ? "99+" : unreadCount}
+                        </span>
+                    )}
                 </div>
 
                 {/* create post link */}
@@ -144,7 +178,10 @@ export const SideNavbar = ({ onOpenCreatePost }) => {
                     <h6
                         onClick={async () => {
                         // await logout();
-                        // dispatch(clearUser());
+                        localStorage.removeItem("accessToken");
+                        window.dispatchEvent(new Event("auth-token-changed"));
+                        dispatch(clearUser());
+                        dispatch(clearNotificationsInState());
                         navigate("/login");
                         }}
                     >
@@ -154,6 +191,10 @@ export const SideNavbar = ({ onOpenCreatePost }) => {
                 )}
                 </div>
             </div>
+            <NotificationDrawer
+                isOpen={openNotification}
+                onClose={() => setOpenNotification(false)}
+            />
         </div>
     );
 };

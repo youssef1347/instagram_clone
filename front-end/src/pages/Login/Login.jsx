@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import './Login.css'
 import { FaMeta } from "react-icons/fa6";
 import api from '../../utils/api';
@@ -36,6 +36,7 @@ export const Login = () => {
             // store access token in local storage
             const { accessToken } = response.data;
             localStorage.setItem('accessToken', accessToken);
+            window.dispatchEvent(new Event("auth-token-changed"));
 
             // navigate to home page after successful login
             navigate('/');
@@ -51,7 +52,7 @@ export const Login = () => {
         }
     }
 
-    function onChange(e) {
+    function onChange() {
         // handle if the input fields are empty or not, and enable/disable the login button accordingly
         const email = emailRef.current.value;
         const password = passwordRef.current.value;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./Navbar.css";
 import {
   FiHome,
@@ -16,11 +16,13 @@ import { clearUser } from "../../store/slices/userSlice";
 
 export const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
+    window.dispatchEvent(new Event("auth-token-changed"));
     dispatch(clearUser());
     navigate("/login");
   };
@@ -43,10 +45,24 @@ export const Navbar = () => {
         </div>
 
         {/* Search Bar */}
-        <div className="navbar-search">
+        <form
+          className="navbar-search"
+          onSubmit={(event) => {
+            event.preventDefault();
+            const trimmed = searchQuery.trim();
+            if (trimmed) {
+              navigate(`/search?query=${encodeURIComponent(trimmed)}`);
+            }
+          }}
+        >
           <FiSearch size={18} />
-          <input type="text" placeholder="Search" />
-        </div>
+          <input
+            type="text"
+            placeholder="Search"
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
+          />
+        </form>
 
         {/* Desktop Navigation Icons */}
         <div className="navbar-icons">
