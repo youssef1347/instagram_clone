@@ -110,7 +110,7 @@ exports.verifyOtp = async (req, res) => {
         // store refresh token in httpOnly cookie
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
-            secure: false,
+            secure: true,
             sameSite: 'strict',
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
@@ -159,7 +159,7 @@ exports.login = async (req, res) => {
         // store refresh token in httpOnly cookie
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
-            secure: false,
+            secure: true,
             sameSite: 'strict',
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
@@ -183,7 +183,7 @@ exports.logout = async (req, res) => {
         // Clear the refresh token cookie
         res.clearCookie('refreshToken', {
             httpOnly: true,
-            secure: false,
+            secure: true,
             sameSite: 'strict',
         });
 
