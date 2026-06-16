@@ -68,7 +68,7 @@ export const Home = () => {
                 {[1, 2, 3, 4, 5].map((i) => (
                     <div key={i} className="story">
                     <img
-                        src={`http://localhost:5000/uploads/default-profile-pic.jpg`}
+                        src={`${import.meta.env.VITE_BACKEND_URL}/uploads/default-profile-pic.jpg`}
                         alt={`User${i}`}
                         className="story-avatar"
                     />
@@ -126,7 +126,7 @@ export const Home = () => {
                 <div key={i} className="suggestion-item">
                   <div className="suggestion-user">
                     <img
-                      src={`http://localhost:5000/uploads/default-profile-pic.jpg`}
+                      src={`${import.meta.env.VITE_BACKEND_URL}/uploads/default-profile-pic.jpg`}
                       alt={`User${i}`}
                     />
                     <div>

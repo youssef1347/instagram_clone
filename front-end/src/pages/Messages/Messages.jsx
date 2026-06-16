@@ -14,9 +14,10 @@ const getOtherParticipant = (conversation, currentUserId) => {
 };
 
 const getAvatarSrc = (profilePic) => {
-  if (!profilePic) return "http://localhost:5000/uploads/default-profile-pic.jpg";
+  if (!profilePic)
+    return "${import.meta.env.VITE_BACKEND_URL}/uploads/default-profile-pic.jpg";
   if (profilePic.startsWith("http")) return profilePic;
-  return `http://localhost:5000/${profilePic}`;
+  return `${import.meta.env.VITE_BACKEND_URL}/${profilePic}`;
 };
 
 const formatMessageTime = (createdAt) => {
@@ -94,7 +95,7 @@ export const Messages = () => {
     const token = localStorage.getItem("accessToken");
     if (!token) return undefined;
 
-    const socket = io("http://localhost:5000", {
+    const socket = io("${import.meta.env.VITE_BACKEND_URL}", {
       auth: { token },
       withCredentials: true,
     });
@@ -110,7 +111,9 @@ export const Messages = () => {
       setActiveConversation((current) => {
         if (current?._id === conversation._id) {
           setMessages((currentMessages) => {
-            const exists = currentMessages.some((item) => item._id === message._id);
+            const exists = currentMessages.some(
+              (item) => item._id === message._id,
+            );
             return exists ? currentMessages : [...currentMessages, message];
           });
           api.patch(`/api/chats/${conversation._id}/read`).catch(console.log);
@@ -230,7 +233,10 @@ export const Messages = () => {
                   key={result._id}
                   onClick={() => openConversationWithUser(result)}
                 >
-                  <img src={getAvatarSrc(result.profilePic)} alt={result.username} />
+                  <img
+                    src={getAvatarSrc(result.profilePic)}
+                    alt={result.username}
+                  />
                   <span>{result.username}</span>
                 </button>
               ))}
@@ -241,16 +247,23 @@ export const Messages = () => {
             {isLoadingConversations ? (
               <p className="messages-empty">Loading chats...</p>
             ) : conversations.length === 0 ? (
-              <p className="messages-empty">Search for someone to start chatting.</p>
+              <p className="messages-empty">
+                Search for someone to start chatting.
+              </p>
             ) : (
               conversations.map((conversation) => {
-                const participant = getOtherParticipant(conversation, user?._id);
+                const participant = getOtherParticipant(
+                  conversation,
+                  user?._id,
+                );
                 return (
                   <button
                     type="button"
                     key={conversation._id}
                     className={`conversation-item ${
-                      activeConversation?._id === conversation._id ? "active" : ""
+                      activeConversation?._id === conversation._id
+                        ? "active"
+                        : ""
                     }`}
                     onClick={() => setActiveConversation(conversation)}
                   >
@@ -260,7 +273,9 @@ export const Messages = () => {
                     />
                     <span className="conversation-copy">
                       <strong>{participant?.username || "Unknown User"}</strong>
-                      <span>{conversation.lastMessage?.text || "No messages yet"}</span>
+                      <span>
+                        {conversation.lastMessage?.text || "No messages yet"}
+                      </span>
                     </span>
                   </button>
                 );

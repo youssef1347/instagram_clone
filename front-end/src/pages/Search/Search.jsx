@@ -7,11 +7,11 @@ import "./Search.css";
 
 const buildProfileImage = (profilePic) => {
   if (!profilePic) {
-    return `http://localhost:5000/uploads/default-profile-pic.jpg`;
+    return `${import.meta.env.VITE_BACKEND_URL}/uploads/default-profile-pic.jpg`;
   }
   return profilePic.startsWith("http")
     ? profilePic
-    : `http://localhost:5000/${profilePic}`;
+    : `${import.meta.env.VITE_BACKEND_URL}/${profilePic}`;
 };
 
 export const Search = () => {

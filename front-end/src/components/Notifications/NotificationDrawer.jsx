@@ -209,7 +209,7 @@ export const NotificationDrawer = ({ isOpen, onClose }) => {
 
                 {notification.post?.imageUrl && (
                   <img
-                    src={`http://localhost:5000/${notification.post.imageUrl}`}
+                    src={`${import.meta.env.VITE_BACKEND_URL}/${notification.post.imageUrl}`}
                     alt=""
                     className="notification-post-thumb"
                   />

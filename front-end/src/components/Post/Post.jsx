@@ -68,7 +68,7 @@ export const Post = ({ post, onPostUpdate }) => {
 
             {/* Post Image */}
             <div className="post-image-container">
-                <img src={`http://localhost:5000/${post.imageUrl}`} alt="Post" className="post-image" />
+                <img src={`${import.meta.env.VITE_BACKEND_URL}/${post.imageUrl}`} alt="Post" className="post-image" />
             </div>
 
             {/* Post Actions */}
