@@ -14,7 +14,7 @@ const userSchema = mongoose.Schema({
     resetPasswordExpires: { type: Date },
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    profilePic: { type: String, default: `uploads/default-profile-pic.jpg` },
+    profilePic: { type: String, default: `${process.env.VITE_BACKEND_URL}/uploads/default-profile-pic.jpg` },
     bio: { type: String, default: '' },
     privateAccount: { type: Boolean, default: false },
 }, { timestamps: true } );
