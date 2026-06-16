@@ -111,7 +111,7 @@ exports.verifyOtp = async (req, res) => {
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
             secure: true,
-            sameSite: 'strict',
+            sameSite: 'none',
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
 
@@ -160,7 +160,7 @@ exports.login = async (req, res) => {
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
             secure: true,
-            sameSite: 'strict',
+            sameSite: 'none',
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
 
@@ -184,7 +184,7 @@ exports.logout = async (req, res) => {
         res.clearCookie('refreshToken', {
             httpOnly: true,
             secure: true,
-            sameSite: 'strict',
+            sameSite: 'none',
         });
 
         res.status(200).json({ message: "Logout successful" });

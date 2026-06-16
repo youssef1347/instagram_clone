@@ -4,8 +4,11 @@ import { FaHeart } from "react-icons/fa";
 import api from "../../utils/api";
 import toast from "react-hot-toast";
 import "./Post.css";
+import { useSelector } from "react-redux";
 
 export const Post = ({ post, onPostUpdate }) => {
+    const { user } = useSelector(state => state.user);
+    console.log(user)
     const [isLiked, setIsLiked] = useState(
         post.likes.some((like) => like._id === localStorage.getItem("userId")),
     );

@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const userSchema = mongoose.Schema({
     email: { type: String, required: true, unique: true },
@@ -12,7 +14,7 @@ const userSchema = mongoose.Schema({
     resetPasswordExpires: { type: Date },
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    profilePic: { type: String, default: 'http://localhost:5000/uploads/default-profile-pic.jpg' },
+    profilePic: { type: String, default: `uploads/default-profile-pic.jpg` },
     bio: { type: String, default: '' },
     privateAccount: { type: Boolean, default: false },
 }, { timestamps: true } );

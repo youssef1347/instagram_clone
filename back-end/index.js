@@ -16,7 +16,7 @@ const app = express();
 const server = http.createServer(app);
 initSocket(server);
 
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+app.use(cors({ origin: "https://instagram-clone-frontend-kappa.vercel.app", credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use("/uploads", express.static("uploads"));
